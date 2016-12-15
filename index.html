@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>slide</title>
+	<script type="text/javascript">
+		var html = document.documentElement;
+		var iW = html.clientWidth;
+		html.style.fontSize = iW / 15 + "px";
+	</script>
+	<style type="text/css">
+		*{margin: 0; padding: 0;}
+		li{list-style: none;}
+		img{vertical-align: top;}
+		.wrap{height: 4.68rem; position: relative; overflow: hidden;}
+		.list{width: 400%; position: absolute; top: 0; left: 0;}
+		.list li{float: left; width: 15rem;}
+		.list img{width: 15rem; display: block;}
+		nav{width: 15rem; height: 10px; position: absolute;bottom: 5px; z-index: 1; text-align: center;}
+		nav a{width: 10px; height: 10px; display: inline-block; background: red; border-radius: 50%; vertical-align: top;}
+		nav a.active{background: #fff;}
+	</style>
+</head>
+<body>
+	<section class="wrap">
+		<ul class="list">
+			<li><img src="img/img1.jpg" alt=""></li>
+			<li><img src="img/img2.jpg" alt=""></li>
+			<li><img src="img/img3.jpg" alt=""></li>
+			<li><img src="img/img4.jpg" alt=""></li>
+		</ul>
+		<nav>
+			<a href="javascript:;" class="active"></a>
+			<a href="javascript:;"></a>
+			<a href="javascript:;"></a>
+			<a href="javascript:;"></a>
+		</nav>
+	</section>	
+	<script type="text/javascript">
+		var wrap = document.querySelector('.wrap'),
+			list = document.querySelector('.list'),
+			a = document.querySelectorAll('a'),
+			w = wrap.clientWidth,
+			disX = 0,
+			n=0,
+			listLeft =0;
+
+			list.innerHTML += list.innerHTML;
+
+			list.style.width = w * list.children.length + 'px';
+
+			list.addEventListener('touchstart',start);
+			list.addEventListener('touchmove',move);
+			list.addEventListener('touchend',end);	
+
+			function start(ev){
+				list.style.transition = list.style.WebkitTransition = 'none';
+
+				var e = ev.changedTouches[0];
+				disX = e.pageX;
+
+				var num = Math.round(list.offsetLeft / w);
+				console.log(num);
+
+				if( num == 0 ){
+					num = a.length;
+					list.style.left = -w * num + "px";
+				}
+
+				if(-num == list.children.length - 1){
+					num = a.length-1;
+					list.style.left = -w * num + "px";
+				}
+
+				listLeft = this.offsetLeft;
+			}
+
+			function move(ev){
+				var e = ev.changedTouches[0];
+
+				list.style.left = (e.pageX - disX + listLeft) + "px";
+
+			}
+
+			function end(){
+				var num = Math.round(list.offsetLeft / w);
+
+				list.style.transition = list.style.WebkitTransition = '.5s';
+
+				list.style.left = num * w + "px";
+
+				a[n].className = '';
+				a[-num%a.length].className = "active";
+				n = -num%a.length;
+
+			}
+
+
+	</script>
+</body>
+</html>
